@@ -1,70 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Message For You</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            overflow: hidden;
-            background: #111;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        button {
-            padding: 15px 30px;
-            font-size: 18px;
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            z-index: 3;
-            position: relative;
-        }
-
-        .container {
-            position: relative;
-            z-index: 3;
-        }
-
-        .message {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-
-        .bold-text {
-            font-size: 50px;
-            font-weight: bold;
-            color: red;
-            margin-top: 20px;
-        }
-
-        /* Floating emoji overlay */
-        #emojiOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* so you can still click the button */
-            overflow: hidden;
-            z-index: 2;
-        }
-
-        .emoji {
-            position: absolute;
-            animation: floatUp linear infinite;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); }
-            100% { transform: translateY(-50px) rotate(360deg); }
-        }
-    </style>
+<meta charset="UTF-8">
+<title>My Message For You</title>
+<style>
+    body {
+        margin: 0;
+        background: #111;
+        color: white;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+    }
+    #startScreen {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+    }
+    button {
+        padding: 15px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    #mainContent {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        display: none;
+        z-index: 2;
+    }
+    .message {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+    .bold-text {
+        font-size: 50px;
+        font-weight: bold;
+        color: red;
+    }
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+</style>
 </head>
 <body>
 
@@ -72,31 +59,72 @@
     <button onclick="showMessage()">Click Me</button>
 </div>
 
-<div id="mainContent" class="container" style="display:none;">
+<div id="mainContent">
     <div class="message">My message for you 😭👉</div>
     <div class="bold-text">HAHAHA WALANG WALANG JOWA</div>
 </div>
 
-<div id="emojiOverlay"></div>
+<canvas id="emojiCanvas"></canvas>
 
 <script>
-function showMessage() {
-    document.getElementById("startScreen").style.display = "none";
-    document.getElementById("mainContent").style.display = "block";
+const canvas = document.getElementById('emojiCanvas');
+const ctx = canvas.getContext('2d');
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+let emojis = [];
 
-    const overlay = document.getElementById("emojiOverlay");
-
-    // Create 50 floating emojis
-    for (let i = 0; i < 50; i++) {
-        const emoji = document.createElement("div");
-        emoji.classList.add("emoji");
-        emoji.innerText = "😂";
-        emoji.style.left = Math.random() * window.innerWidth + "px";
-        emoji.style.fontSize = (20 + Math.random() * 60) + "px";
-        emoji.style.animationDuration = (3 + Math.random() * 5) + "s";
-        overlay.appendChild(emoji);
-    }
+function Emoji() {
+    this.x = Math.random() * width;
+    this.y = height + Math.random() * 100;
+    this.size = 20 + Math.random() * 60;
+    this.speed = 1 + Math.random() * 3;
+    this.rotation = Math.random() * 360;
+    this.rotSpeed = (Math.random() - 0.5) * 5;
 }
+Emoji.prototype.update = function() {
+    this.y -= this.speed;
+    this.rotation += this.rotSpeed;
+    if (this.y < -50) {
+        this.y = height + 50;
+        this.x = Math.random() * width;
+    }
+};
+Emoji.prototype.draw = function() {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation * Math.PI / 180);
+    ctx.font = this.size + "px Arial";
+    ctx.fillText("😂", -this.size/2, this.size/2);
+    ctx.restore();
+};
+
+function animate() {
+    ctx.clearRect(0, 0, width, height);
+    for (let i = 0; i < emojis.length; i++) {
+        emojis[i].update();
+        emojis[i].draw();
+    }
+    requestAnimationFrame(animate);
+}
+
+function showMessage() {
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+
+    // Create 50 emojis
+    emojis = [];
+    for (let i = 0; i < 50; i++) {
+        emojis.push(new Emoji());
+    }
+
+    animate();
+}
+
+// Resize canvas when window changes
+window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+});
 </script>
 
 </body>
