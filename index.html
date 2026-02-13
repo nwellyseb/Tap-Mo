@@ -1,95 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Message For You</title>
+    <title>My Message For You</title>
     <style>
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            text-align: center;
-            color: #333;
-        }
-
-        .card {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            max-width: 400px;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 30px;
-            background-color: #6a11cb;
+            background: black;
             color: white;
-            font-size: 16px;
+            font-family: Arial;
+            text-align: center;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
             cursor: pointer;
-            transition: 0.3s;
         }
-
-        button:hover {
-            background-color: #2575fc;
-        }
-
-        .result {
+        .message {
             margin-top: 30px;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .emoji {
-            font-size: 60px;
-            margin-top: 20px;
-        }
-
-        footer {
-            position: absolute;
-            bottom: 10px;
-            font-size: 12px;
-            opacity: 0.6;
+            font-size: 40px;
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>Click for a Special Message 😌</h1>
-        <button onclick="showMessage()">Click Me</button>
-        <div class="result" id="result"></div>
-        <div class="emoji" id="emoji"></div>
-    </div>
+<div>
+    <button onclick="showMessage()">Click Me</button>
+    <div class="message" id="msg"></div>
+</div>
 
-    <footer>
-        This is personal. Not really. But it feels like it.
-    </footer>
-
-    <script>
-        function showMessage() {
-            const resultDiv = document.getElementById("result");
-            const emojiDiv = document.getElementById("emoji");
-
-            resultDiv.innerHTML = "Loading your special message...";
-            emojiDiv.innerHTML = "";
-
-            setTimeout(() => {
-                resultDiv.innerHTML = "My message for you 😭👉";
-                emojiDiv.innerHTML = "👉😂";
-            }, 2000);
-        }
-    </script>
+<script>
+function showMessage() {
+    document.getElementById("msg").innerHTML = "😭👉 MY MESSAGE FOR YOU 😂";
+}
+</script>
 
 </body>
 </html>
