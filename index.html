@@ -4,36 +4,76 @@
     <title>My Message For You</title>
     <style>
         body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: black;
+            background: #111;
             color: white;
-            font-family: Arial;
+            overflow: hidden;
             text-align: center;
         }
+
         button {
             padding: 15px 30px;
             font-size: 18px;
             cursor: pointer;
+            border: none;
+            border-radius: 8px;
         }
+
+        .container {
+            position: relative;
+            z-index: 2;
+        }
+
         .message {
-            margin-top: 30px;
-            font-size: 40px;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .bold-text {
+            font-size: 50px;
+            font-weight: bold;
+            color: red;
+            margin-top: 20px;
+        }
+
+        .gif {
+            width: 300px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .big-emoji {
+            position: absolute;
+            font-size: 300px;
+            opacity: 0.15;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
 
-<div>
+<div id="startScreen">
     <button onclick="showMessage()">Click Me</button>
-    <div class="message" id="msg"></div>
 </div>
+
+<div id="mainContent" style="display:none;" class="container">
+    <div class="message">My message for you 😭👉</div>
+    <img class="gif" src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUydXc5YmpnNjVmczk1djg4cmNqMzBhcHoyZ3VremRoc3hycjdzYW1nayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/GpyS1lJXJYupG/giphy.gif" alt="laughing gif">
+    <div class="bold-text">HAHAHA WALANG WALANG JOWA</div>
+</div>
+
+<div id="bgEmoji" class="big-emoji" style="display:none;">😂</div>
 
 <script>
 function showMessage() {
-    document.getElementById("msg").innerHTML = "😭👉 MY MESSAGE FOR YOU 😂";
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
+    document.getElementById("bgEmoji").style.display = "block";
 }
 </script>
 
